@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тестування програмного забезпечення — Курс</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-primary: #0f1117;
+      --bg-secondary: #161822;
+      --bg-card: rgba(255, 255, 255, 0.04);
+      --bg-card-hover: rgba(255, 255, 255, 0.08);
+      --border-subtle: 1px solid rgba(255, 255, 255, 0.06);
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --text-muted: #64748b;
+      --text-disabled: #334155;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-purple-light: #a78bfa;
+      --gradient-primary: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      --font-heading: 'Outfit', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-lg: 12px;
+      --radius-md: 8px;
+      --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: var(--font-heading);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ===== BACKGROUND ===== */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 20% 10%, rgba(59, 130, 246, 0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 50% at 80% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(15, 17, 23, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: var(--border-subtle);
+      padding: 1rem 2rem;
+    }
+
+    .header__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .header__logo {
+      background: var(--gradient-primary);
+      padding: 0.5rem;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .header__logo svg {
+      width: 24px;
+      height: 24px;
+      color: white;
+    }
+
+    .header__title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .header__subtitle {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 4rem 2rem 2rem;
+    }
+
+    .hero__badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--accent-purple-light);
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      padding: 0.35rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .hero__title {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #f1f5f9 30%, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero__desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ===== MAIN ===== */
+    .main {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 2rem 4rem;
+    }
+
+    .section-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      padding-left: 0.25rem;
+    }
+
+    /* ===== LECTURE GRID ===== */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 3rem;
+    }
+
+    .card {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.1rem 1.25rem;
+      border-radius: var(--radius-lg);
+      border: var(--border-subtle);
+      background: var(--bg-card);
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s ease;
+    }
+
+    a.card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(255, 255, 255, 0.1);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .card--disabled {
+      opacity: 0.35;
+      cursor: default;
+    }
+
+    .card--self-study {
+      border-left: 3px solid var(--accent-purple);
+    }
+
+    .card__num {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg-secondary);
+      min-width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-md);
+      flex-shrink: 0;
+    }
+
+    a.card:hover .card__num {
+      background: var(--gradient-primary);
+      color: white;
+    }
+
+    .card__body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .card__title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--text-secondary);
+    }
+
+    a.card:hover .card__title {
+      color: white;
+    }
+
+    .card__tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      color: var(--accent-purple-light);
+      margin-top: 0.3rem;
+    }
+
+    .card__status {
+      font-size: 0.7rem;
+      color: var(--text-disabled);
+      margin-top: 0.3rem;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 1.5rem 2rem;
+      border-top: var(--border-subtle);
+      font-size: 0.8rem;
+      color: var(--text-disabled);
+    }
+
+    /* ===== ANIMATIONS ===== */
+    .card {
+      opacity: 0;
+      transform: translateY(12px);
+      animation: fadeUp 0.4s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card:nth-child(1)  { animation-delay: 0.02s; }
+    .card:nth-child(2)  { animation-delay: 0.04s; }
+    .card:nth-child(3)  { animation-delay: 0.06s; }
+    .card:nth-child(4)  { animation-delay: 0.08s; }
+    .card:nth-child(5)  { animation-delay: 0.10s; }
+    .card:nth-child(6)  { animation-delay: 0.12s; }
+    .card:nth-child(7)  { animation-delay: 0.14s; }
+    .card:nth-child(8)  { animation-delay: 0.16s; }
+    .card:nth-child(9)  { animation-delay: 0.18s; }
+    .card:nth-child(10) { animation-delay: 0.20s; }
+    .card:nth-child(11) { animation-delay: 0.22s; }
+    .card:nth-child(12) { animation-delay: 0.24s; }
+    .card:nth-child(13) { animation-delay: 0.26s; }
+    .card:nth-child(14) { animation-delay: 0.28s; }
+    .card:nth-child(15) { animation-delay: 0.30s; }
+
+    .card--disabled {
+      animation: fadeUpDim 0.4s ease forwards;
+    }
+
+    @keyframes fadeUpDim {
+      to {
+        opacity: 0.35;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 640px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 3rem 1.5rem 1.5rem;
+      }
+
+      .main {
+        padding: 1.5rem 1rem 3rem;
+      }
+
+      .header {
+        padding: 0.75rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header__inner">
+      <div class="header__logo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2v6a2 2 0 0 0 2 2h6"/><path d="M16 18a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/><path d="M16.5 2H14a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h6V4.5L16.5 2Z"/></svg>
+      </div>
+      <div>
+        <div class="header__title">Тестування програмного забезпечення</div>
+        <div class="header__subtitle">Software Testing Course</div>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero__badge">2025 / 2026</div>
+    <h1 class="hero__title">Тестування програмного<br>забезпечення</h1>
+    <p class="hero__desc">Лекційні матеріали курсу — від основ QA до CI/CD та стратегії тестування</p>
+  </section>
+
+  <main class="main">
+    <h2 class="section-title">Лекції</h2>
+    <div class="grid">
+      <a class="card" href="lectures/#/1">
+        <div class="card__num">1</div>
+        <div class="card__body">
+          <div class="card__title">Вступ до тестування. Роль QA в SDLC</div>
+        </div>
+      </a>
+
+      <a class="card" href="lectures/#/2">
+        <div class="card__num">2</div>
+        <div class="card__body">
+          <div class="card__title">Вимоги. User Stories. Acceptance Criteria</div>
+        </div>
+      </a>
+
+      <a class="card" href="lectures/#/3">
+        <div class="card__num">3</div>
+        <div class="card__body">
+          <div class="card__title">Техніки тест-дизайну</div>
+        </div>
+      </a>
+
+      <a class="card" href="lectures/#/4">
+        <div class="card__num">4</div>
+        <div class="card__body">
+          <div class="card__title">Баг-репорти. Життєвий цикл дефекту</div>
+        </div>
+      </a>
+
+      <a class="card" href="lectures/#/5">
+        <div class="card__num">5</div>
+        <div class="card__body">
+          <div class="card__title">Unit-тестування: принципи, AAA, mocking. Jest / JUnit. Coverage</div>
+        </div>
+      </a>
+
+      <a class="card" href="lectures/#/6">
+        <div class="card__num">6</div>
+        <div class="card__body">
+          <div class="card__title">API-тестування: REST, HTTP, Postman</div>
+        </div>
+      </a>
+
+      <a class="card" href="lectures/#/7">
+        <div class="card__num">7</div>
+        <div class="card__body">
+          <div class="card__title">API-тестування: автоматизація</div>
+        </div>
+      </a>
+
+      <a class="card" href="lectures/#/8">
+        <div class="card__num">8</div>
+        <div class="card__body">
+          <div class="card__title">E2E тестування: Playwright, POM</div>
+        </div>
+      </a>
+
+      <a class="card card--self-study" href="lectures/#/8*-Python">
+        <div class="card__num">8*</div>
+        <div class="card__body">
+          <div class="card__title">Playwright. Python</div>
+          <div class="card__tag">★ Самостійне вивчення</div>
+        </div>
+      </a>
+
+      <a class="card card--self-study" href="lectures/#/8*-Java">
+        <div class="card__num">8*</div>
+        <div class="card__body">
+          <div class="card__title">Playwright. Java</div>
+          <div class="card__tag">★ Самостійне вивчення</div>
+        </div>
+      </a>
+
+      <a class="card" href="lectures/#/9">
+        <div class="card__num">9</div>
+        <div class="card__body">
+          <div class="card__title">E2E: складні сценарії, SQL</div>
+        </div>
+      </a>
+
+      <a class="card" href="lectures/#/10">
+        <div class="card__num">10</div>
+        <div class="card__body">
+          <div class="card__title">Performance Testing</div>
+        </div>
+      </a>
+
+      <div class="card card--disabled">
+        <div class="card__num">11</div>
+        <div class="card__body">
+          <div class="card__title">Security Testing</div>
+          <div class="card__status">В розробці</div>
+        </div>
+      </div>
+
+      <div class="card card--disabled">
+        <div class="card__num">12</div>
+        <div class="card__body">
+          <div class="card__title">CI/CD: GitHub Actions. Матриці, звіти. Підсумки</div>
+          <div class="card__status">В розробці</div>
+        </div>
+      </div>
+
+      <div class="card card--disabled">
+        <div class="card__num">13</div>
+        <div class="card__body">
+          <div class="card__title">Стратегія тестування, піраміда, підсумки</div>
+          <div class="card__status">В розробці</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    Курс "Тестування програмного забезпечення" • 2025/2026
+  </footer>
+
+</body>
+</html>
