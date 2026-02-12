@@ -251,6 +251,15 @@
       margin-top: 0.3rem;
     }
 
+    .card__score {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--accent-blue);
+      margin-top: 0.35rem;
+      min-height: 1em;
+    }
+
     /* ===== FOOTER ===== */
     .footer {
       position: relative;
@@ -340,7 +349,7 @@
   <section class="hero">
     <div class="hero__badge">2025 / 2026</div>
     <h1 class="hero__title">Тестування програмного<br>забезпечення</h1>
-    <p class="hero__desc">Матеріали курсу — від основ QA до CI/CD та стратегії тестування</p>
+    <p class="hero__desc">Лекційні матеріали курсу — від основ QA до CI/CD та стратегії тестування</p>
   </section>
 
   <main class="main">
@@ -458,39 +467,44 @@
     </div>
 
     <h2 class="section-title" style="margin-top: 2rem;">Лабораторні роботи</h2>
-    <div class="grid">
-      <a class="card" href="https://github.com/romanenko-natali/qc-2026/blob/main/lab-01/README.md" target="_blank" rel="noopener">
+    <div class="grid" id="labs-grid">
+      <a class="card" href="https://github.com/romanenko-natali/qc-2026/blob/main/lab-01/README.md" target="_blank" rel="noopener" data-lab="lab-01">
         <div class="card__num">1</div>
         <div class="card__body">
           <div class="card__title">Вимоги та їх аналіз</div>
+          <div class="card__score" data-score="lab-01"></div>
         </div>
       </a>
 
-      <a class="card" href="https://github.com/romanenko-natali/qc-2026/blob/main/lab-02/README.md" target="_blank" rel="noopener">
+      <a class="card" href="https://github.com/romanenko-natali/qc-2026/blob/main/lab-02/README.md" target="_blank" rel="noopener" data-lab="lab-02">
         <div class="card__num">2</div>
         <div class="card__body">
           <div class="card__title">Техніки тест-дизайну, чеклісти, баг-репорти</div>
+          <div class="card__score" data-score="lab-02"></div>
         </div>
       </a>
 
-      <a class="card" href="https://github.com/romanenko-natali/qc-2026/blob/main/lab-03/README.md" target="_blank" rel="noopener">
+      <a class="card" href="https://github.com/romanenko-natali/qc-2026/blob/main/lab-03/README.md" target="_blank" rel="noopener" data-lab="lab-03">
         <div class="card__num">3</div>
         <div class="card__body">
           <div class="card__title">Unit-тестування</div>
+          <div class="card__score" data-score="lab-03"></div>
         </div>
       </a>
 
-      <a class="card" href="https://github.com/romanenko-natali/qc-2026/blob/main/lab-04/README.md" target="_blank" rel="noopener">
+      <a class="card" href="https://github.com/romanenko-natali/qc-2026/blob/main/lab-04/README.md" target="_blank" rel="noopener" data-lab="lab-04">
         <div class="card__num">4</div>
         <div class="card__body">
           <div class="card__title">API-тестування</div>
+          <div class="card__score" data-score="lab-04"></div>
         </div>
       </a>
 
-      <a class="card" href="https://github.com/romanenko-natali/qc-2026/blob/main/lab-05/README.md" target="_blank" rel="noopener">
+      <a class="card" href="https://github.com/romanenko-natali/qc-2026/blob/main/lab-05/README.md" target="_blank" rel="noopener" data-lab="lab-05">
         <div class="card__num">5</div>
         <div class="card__body">
           <div class="card__title">E2E автоматизація (Playwright)</div>
+          <div class="card__score" data-score="lab-05"></div>
         </div>
       </a>
 
@@ -507,6 +521,53 @@
   <footer class="footer">
     Курс "Тестування програмного забезпечення" • 2025/2026
   </footer>
+
+  <script>
+    (function() {
+      const REPO = 'romanenko-natali/qc-2026';
+      const LABS = ['lab-01', 'lab-02', 'lab-03', 'lab-04', 'lab-05'];
+      const CACHE_KEY = 'lab-scores';
+
+      // Try cache first
+      const cached = sessionStorage.getItem(CACHE_KEY);
+      if (cached) {
+        renderScores(JSON.parse(cached));
+        return;
+      }
+
+      // Fetch all READMEs in parallel
+      Promise.all(
+        LABS.map(lab =>
+          fetch(`https://api.github.com/repos/${REPO}/contents/${lab}/README.md`, {
+            headers: { 'Accept': 'application/vnd.github.v3.raw' }
+          })
+          .then(r => r.ok ? r.text() : null)
+          .then(text => ({ lab, score: parseScore(text) }))
+          .catch(() => ({ lab, score: null }))
+        )
+      ).then(results => {
+        const scores = {};
+        results.forEach(r => { scores[r.lab] = r.score; });
+        sessionStorage.setItem(CACHE_KEY, JSON.stringify(scores));
+        renderScores(scores);
+      });
+
+      function parseScore(text) {
+        if (!text) return null;
+        // Match patterns like "**20 балів**", "20 балів", "Максимальна оцінка:** 20 балів"
+        const match = text.match(/(\d+)\s*балів/i);
+        return match ? parseInt(match[1], 10) : null;
+      }
+
+      function renderScores(scores) {
+        Object.entries(scores).forEach(([lab, score]) => {
+          if (score === null) return;
+          const el = document.querySelector(`[data-score="${lab}"]`);
+          if (el) el.textContent = `${score} балів`;
+        });
+      }
+    })();
+  </script>
 
 </body>
 </html>
