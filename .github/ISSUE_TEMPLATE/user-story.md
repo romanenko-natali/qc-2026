@@ -1,7 +1,7 @@
 ---
 name: User Story
 about: Create new user story
-title: "[US]"
+title: "[US]  Назва функціональності"
 labels: user-story
 assignees: ''
 
