@@ -290,7 +290,7 @@ Title: [QUESTION] Уточнення вимоги: "Текст вимоги ко
 У вашому GitHub-репозиторії:
 
 **GitHub Issues:**
-- 5 Issues з лейблом `user-story` (відповідно до вашого модуля)
+- 3-5 Issues з лейблом `user-story` (відповідно до вашого модуля)
 - 5 Issues з лейблом `question` (аналіз вимог вашого варіанту)
 
 **GitHub Project (Board):**
