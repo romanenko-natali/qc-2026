@@ -88,6 +88,24 @@ docker compose down
    - `user-story` (зелений)
    - `question` (жовтий)
 
+### Корисні матеріали
+
+**Вимоги:**
+- [What Are Software Requirements?](https://www.guru99.com/learn-software-requirements-analysis-with-case-study.html)
+- [Functional vs Non-Functional Requirements](https://www.guru99.com/functional-vs-non-functional-requirements.html)
+
+**User Stories та Acceptance Criteria:**
+- [How to Write User Stories](https://www.atlassian.com/agile/project-management/user-stories)
+- [Acceptance Criteria: Purposes, Formats, Examples](https://www.altexsoft.com/blog/acceptance-criteria-purposes-formats-and-best-practices/)
+
+**Аналіз вимог:**
+- [Requirements Engineering Process](https://www.geeksforgeeks.org/software-engineering/software-engineering-requirements-engineering-process/)
+
+**GitHub:**
+- [GitHub Issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues)
+- [GitHub Projects](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects)
+- [Configuring Issue Templates](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository)
+
 ---
 
 ### Практична частина
@@ -99,11 +117,12 @@ docker compose down
 **Формат Issue:**
 
 ```markdown
-Title: [USER STORY] Назва функціональності
+Title: [US] Назва функціональності
+Labels: user-story
 
 ## User Story
-Як [роль],
-я хочу [дія],
+Як [роль],  
+я хочу [дія],  
 щоб [цінність].
 
 ## Acceptance Criteria
@@ -128,13 +147,17 @@ Title: [USER STORY] Назва функціональності
 **Формат Issue:**
 
 ```markdown
-Title: [QUESTION] Уточнення вимоги: "..."
+Title: [QUESTION] Уточнення вимоги: "Текст вимоги коротко..."
+Labels: question
 
 ## Оригінальна вимога
 > Текст вимоги
 
 ## Проблема
-Тип: [неповнота / неоднозначність / суперечливість / нетестовність]
+- [ ] Неповнота
+- [ ] Неоднозначність
+- [ ] Суперечливість
+- [ ] Нетестовність
 
 Пояснення чому це проблема.
 
@@ -264,19 +287,19 @@ Title: [QUESTION] Уточнення вимоги: "..."
 
 ---
 
-#### Варіант 8: Загальна навігація та адаптивність
+#### Варіант 8: Створення семестру
 
-**Модуль:** Загальний інтерфейс системи, навігація між розділами, адаптивність під різні пристрої.
+**Модуль:** Створення та налаштування навчального семестру (адмін-панель).
 
-**Область для User Stories:** Навігація між розкладом груп і викладачів, головна сторінка та структура меню, відображення на мобільних пристроях, відображення на планшетах, коректність роботи в різних браузерах.
+**Область для User Stories:** Створення нового семестру, налаштування дат початку та кінця, вибір навчальних днів тижня, прив'язка дзвінків (пар) до семестру, позначення семестру як поточного або дефолтного.
 
 **Вимоги для аналізу:**
 
-1. Система повинна працювати на всіх пристроях.
-2. Навігація має бути інтуїтивно зрозумілою.
-3. Система повинна швидко завантажуватися.
-4. Інтерфейс має бути сучасним.
-5. Користувач не повинен губитися в системі.
+1. Менеджер може створювати нові семестри.
+2. Семестр повинен мати коректні дати.
+3. Система має контролювати унікальність поточного семестру.
+4. Налаштування семестру має бути зручним.
+5. Дефолтний семестр повинен використовуватися автоматично.
 
 ---
 
@@ -285,7 +308,7 @@ Title: [QUESTION] Уточнення вимоги: "..."
 У вашому GitHub-репозиторії:
 
 **GitHub Issues:**
-- 5 Issues з лейблом `user-story` (відповідно до вашого модуля)
+- 3-5 Issues з лейблом `user-story` (відповідно до вашого модуля)
 - 5 Issues з лейблом `question` (аналіз вимог вашого варіанту)
 
 **GitHub Project (Board):**

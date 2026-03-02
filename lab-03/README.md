@@ -14,7 +14,7 @@
 
 Проєкт вже містить unit-тести:
 - **Frontend (Jest):** `frontend/src/helper/*.test.js`
-- **Backend (JUnit 5):** `src/test/java/com/softserve/service/*Test.java`, `src/test/java/com/softserve/util/*Test.java`
+- **Backend (JUnit 5):** `src/test/java/com/softserve/service/*Test.java`
 
 Ваше завдання — розширити існуюче тестове покриття.
 
@@ -202,6 +202,8 @@ pitest {
 
 **Трек Java:**
 - Завдання 1: Розширити `GroupServiceTest` та `StudentServiceTest`
+  - `GroupServiceTest` — додати тести: `isExistsById` коли група не знайдена (`false`), `getAll` / `getDisabled` / `getByTeacherId` з порожніми результатами, `getWithStudentsById` коли `students = null`, перевірка що `save` не викликає `repository.save()` після `FieldAlreadyExistsException`
+  - `StudentServiceTest` — додати тести: `save(StudentDTO)` happy path — новий студент з автоматичною реєстрацією (`findSocialUser` повертає empty), `update(StudentDTO)` happy path — оновлення коли email належить цьому ж студенту
 
 ---
 
@@ -214,6 +216,8 @@ pitest {
 
 **Трек Java:**
 - Завдання 1: Розширити `TeacherServiceTest` та `SubjectServiceTest`
+  - `TeacherServiceTest` — додати тести: `deleteById` коли вчитель має `userId` (перевірити скидання ролі на `ROLE_USER`), `getUserDataByUserId` для трьох випадків (`null` → повертає null, знайдений вчитель, не знайдений → повертає null), `removeUserFromTeacher(null)` → `FieldNullException`
+  - `SubjectServiceTest` — додати тести: `getAll` / `getDisabled` з порожніми результатами, `getSubjectsWithTypes` з порожнім списком
 
 ---
 
@@ -225,7 +229,9 @@ pitest {
   - Написати тести для функцій з `sheduleUtils.js` — `isNotReadySchedule`, `filterClassesArray`. Покрийте: порожній розклад з loading/без loading, непорожній розклад, null, масив з дублікатами, порожній масив, масив з унікальними елементами
 
 **Трек Java:**
-- Завдання 1: Розширити `DepartmentServiceTest` та `RoomServiceTest`
+- Завдання 1: Написати `DepartmentServiceTest` та розширити `RoomServiceTest`
+  - `DepartmentServiceTest` — написати з нуля: `getById` (happy path + `EntityNotFoundException`), `getAll`, `save` (happy path + `FieldAlreadyExistsException` при дублікаті назви), `update` (happy path + `FieldAlreadyExistsException`), `delete` (happy path + `EntityNotFoundException`), `getDisabled`, `getAllTeachers`
+  - `RoomServiceTest` — додати тести: `deleteById` (happy path з перевіркою виклику `shiftSortOrderRange`), `getAll`, `getDisabled`, `getAllOrdered`
 
 ---
 
@@ -237,7 +243,9 @@ pitest {
   - Написати тести для `sortRooms` з `sortRoom.js` та `sortGroups` з `sortGroup.js` — вставка на початок, вставка після елемента, неіснуючий afterId, пустий масив
 
 **Трек Java:**
-- Завдання 1: Розширити `LessonServiceTest` та `PeriodServiceTest`
+- Завдання 1: Розширити `PeriodServiceTest` та `SemesterServiceTest`
+  - `PeriodServiceTest` — додати тести: `saveAll` batch (happy path з кількома періодами, конфлікт між новими періодами в batch), `deleteById` (happy path + `EntityNotFoundException`), `getAll`, `getFirstFourPeriods`
+  - `SemesterServiceTest` — додати тести: `save` з дефолтними значеннями (порожні `daysOfWeek` та `periods` → заповнюються автоматично), `throwIncorrectTimeExceptionIfStartEqualsEnd` (дата початку = даті кінця)
 
 ---
 
@@ -249,7 +257,9 @@ pitest {
   - Розширити тести для `handleFormSubmit` з `handleFormSubmit.js` та `cardObjectHandler` з `cardObjectHandler.js` — додати edge cases: id=0, id=null, id=undefined, строкові числа, пустий card
 
 **Трек Java:**
-- Завдання 1: Розширити `ScheduleServiceTest` та `SemesterServiceTest`
+- Завдання 1: Розширити `ScheduleServiceTest` та `UserServiceTest`
+  - `ScheduleServiceTest` — додати тести: `saveSchedule` для негрупованого уроку (happy path), `deleteSchedulesBySemesterId` (перевірка виклику `evictAllScheduleCaches`), `getAll`
+  - `UserServiceTest` — додати тести: `changePasswordForCurrentUser` (неправильний старий пароль → `IncorrectPasswordException`, невалідний новий пароль → `IncorrectPasswordException`, happy path), `createSocialUser` (існуючий користувач, новий користувач)
 
 ---
 
@@ -261,7 +271,9 @@ pitest {
   - Розширити тести для `getColorByFullness` та `divideLessonsByOneHourLesson` з `schedule.js` — додати edge cases: виклик `getColorByFullness` без аргументів (default parameter), масив з одним елементом, три+ елементи зі зміною вчителя; `divideLessonsByOneHourLesson` з порожнім lessons, hours=0, всі items вже присутні
 
 **Трек Java:**
-- Завдання 1: Розширити `RoomTypeServiceTest` та `UserServiceTest`
+- Завдання 1: Розширити `RoomTypeServiceTest` та `StudentServiceTest`
+  - `RoomTypeServiceTest` — додати тести: `getAll` з порожнім результатом, `deleteById` перевірка що `delete` не викликається після `EntityNotFoundException`, `save` перевірка що `save` не викликається після `FieldAlreadyExistsException`
+  - `StudentServiceTest` — додати тести: `update(StudentDTO)` — `FieldAlreadyExistsException` коли email належить іншому студенту, `update(StudentDTO)` — реєстрація нового user коли `findSocialUser` повертає empty, `saveStudentFromFile` — гілка `ImportSaveStatus.VALIDATION_ERROR` (порожній email)
 
 ---
 
@@ -273,7 +285,9 @@ pitest {
   - Розширити тести для `search` з `search.js` — додати edge cases: term з пробілами на початку/кінці, пошук по неіснуючому полі в arr, регістронезалежність, числові значення в полях, порожній масив items
 
 **Трек Java:**
-- Завдання 1: Розширити `GroupServiceTest` та `TranslatorTest` (`util/`)
+- Завдання 1: Розширити `SemesterServiceTest` та `TeacherServiceTest`
+  - `SemesterServiceTest` — додати тести: `copySemester` (happy path — перевірка копіювання груп, днів, періодів та розкладу), `getById` — перевірка фільтрації disabled груп з результату, `addGroupsToSemester` з порожнім списком groupIds
+  - `TeacherServiceTest` — додати тести: `save` з email що належить менеджеру → `FieldAlreadyExistsException`, `save` з email що вже використовується іншим вчителем → `FieldAlreadyExistsException`
 
 ---
 
@@ -285,7 +299,9 @@ pitest {
   - Розширити тести для `shortTitle.js`, `strings.js`, `sortArray.js` — додати edge cases: `getShortTitle` з title рівним MAX_LENGTH, порожній рядок, MAX_LENGTH=0; `firstStringLetterCapital` з порожнім рядком, рядком з великої літери, рядком що починається з цифри; `sortByName` з одним елементом, однаковими іменами, порожнім масивом
 
 **Трек Java:**
-- Завдання 1: Розширити `TeacherServiceTest` та `PasswordGeneratingUtilTest` (`util/`)
+- Завдання 1: Розширити `ScheduleServiceTest` та `GroupServiceTest`
+  - `ScheduleServiceTest` — додати тести: `save` з конфліктом для групи → `ScheduleConflictException`, `isConflictForGroupInSchedule` (true/false), `getSchedulesBySemester`, `countInputLessonsInScheduleByLessonId`
+  - `GroupServiceTest` — додати тести: перевірка що `update` зберігає `sortOrder` з репозиторію, `getGroupsBySemesterId` перевірка збереження порядку (`LinkedHashSet`), `getGroupsByGroupIds` з порожнім списком, `getAllBySortOrder` з кількома групами у правильному порядку
 
 ---
 
