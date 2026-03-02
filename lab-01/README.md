@@ -80,13 +80,14 @@ docker compose down
 ### Підготовка до роботи
 
 1. Створіть GitHub-репозиторій `schedule-testing` (або форкніть **https://github.com/romanenko-natali/schedule-for-qc-course**)
-2. Увімкніть GitHub Projects для репозиторію:
-   - Settings → Features → Projects ✓
-3. Створіть новий Project (Board view)
-4. Додайте колонки: `Backlog`, `In Progress`, `Done`
-5. Налаштуйте Labels в репозиторії:
+2. Створіть новий Project (Board view)
+3. Додайте колонку `Backlog`
+4. Налаштуйте Labels в репозиторії:
    - `user-story` (зелений)
    - `question` (жовтий)
+   - `priority: high` (червоний)
+   - `priority: medium` (жовтий)
+   - `priorit: low` (зелений)
 
 ### Корисні матеріали
 
@@ -130,6 +131,10 @@ Labels: user-story
 - [ ] Критерій 2
 - [ ] Критерій 3
 - [ ] Критерій 4
+
+### Додатково
+- **Модуль:** 
+- **Пріоритет:** High / Medium / Low
 ```
 
 **Вимоги:**
@@ -147,6 +152,7 @@ Labels: user-story
 **Формат Issue:**
 
 ```markdown
+
 Title: [QUESTION] Уточнення вимоги: "Текст вимоги коротко..."
 Labels: question
 
