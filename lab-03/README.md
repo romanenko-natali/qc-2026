@@ -198,7 +198,7 @@ pitest {
 **Трек JS:**
 - Завдання 1:
   - Розширити `disableComponent.test.js` — додати тести на непокриті гілки `setDisabledSaveButtonSemester` (семестр без id, порожні selectedGroups, видалення групи, порожній semester_groups)
-  - Написати тести для функцій з `formHelper.js` — `setValueToTeacherForSiteHandler`, `setValueToSubjectForSiteHandler`. Для параметра `setValue` використайте `jest.fn()`. Покрийте: знайдений/не знайдений вчитель, id як рядок, порожній масив, неіснуючий id
+  - Написати тести для функцій з `reduxFormHelper.js` — `setValueToTeacherForSiteHandler`, `setValueToSubjectForSiteHandler`. Для параметра `setValue` використайте `jest.fn()`. Покрийте: знайдений/не знайдений вчитель, id як рядок, порожній масив, неіснуючий id
 
 **Трек Java:**
 - Завдання 1: Розширити `GroupServiceTest` та `StudentServiceTest`
